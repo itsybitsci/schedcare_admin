@@ -1,6 +1,6 @@
 {
   "hosting": {
-	"site": "schedcare-admin",
+	"site": "schedcare",
     "public": "build/web",
     "ignore": [
       "firebase.json",
