@@ -38,8 +38,35 @@
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
+
+  <!-- reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6Lc7kcwkAAAAAHzecMjwB9Ny9jC9pW460dR-ORJw"></script>
 </head>
 <body>
+  <script type="module">
+	// Import the functions you need from the SDKs you need
+	import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+	import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
+	// TODO: Add SDKs for Firebase products that you want to use
+	// https://firebase.google.com/docs/web/setup#available-libraries
+
+	// Your web app's Firebase configuration
+	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+	const firebaseConfig = {
+		apiKey: "AIzaSyBWn-hqXc-lbkVtZIFKyckmR2T_HSi9kVU",
+		authDomain: "schedcare.firebaseapp.com",
+		databaseURL: "https://schedcare-default-rtdb.firebaseio.com",
+		projectId: "schedcare",
+		storageBucket: "schedcare.appspot.com",
+		messagingSenderId: "238401330440",
+		appId: "1:238401330440:web:eeddb9f9a69a4487c520bd",
+		measurementId: "G-JS6MX1VQ2Y"
+	};
+
+	// Initialize Firebase
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+  </script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js

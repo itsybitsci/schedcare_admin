@@ -1,6 +1,24 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:schedcare_admin/config/config.dart';
+import 'package:schedcare_admin/firebase_options.dart';
+import 'package:schedcare_admin/services/recaptcha_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: Config.siteKey,
+  );
+
+  //Initialize reCAPTCHA
+  await RecaptchaService.initiate();
+
   runApp(const MyApp());
 }
 
@@ -70,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
