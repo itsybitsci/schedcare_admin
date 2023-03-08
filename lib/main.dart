@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/config/config.dart';
 import 'package:schedcare_admin/screens/authentication/login_screen.dart';
+import 'package:schedcare_admin/screens/home/home_screen.dart';
 import 'package:schedcare_admin/utilities/firebase_options.dart';
 import 'package:schedcare_admin/services/recaptcha_service.dart';
 
@@ -44,10 +45,10 @@ class SchedcareAdminApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => const LoginScreen(),
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => LoginScreen(),
+        '/home': (context) => const HomeScreen()
       },
       debugShowCheckedModeBanner: false,
     );
