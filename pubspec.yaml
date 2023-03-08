@@ -41,6 +41,8 @@ dependencies:
   firebase_app_check: ^0.1.1+12
   firebase_analytics: ^10.1.4
   firebase_performance: ^0.9.0+14
+  flutter_hooks: ^0.18.6
+  hooks_riverpod: ^2.3.0
 
 dev_dependencies:
   flutter_test:

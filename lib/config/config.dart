@@ -13,3 +13,10 @@ class Config {
   static final verificationURL =
       Uri.parse('https://www.google.com/recaptcha/api/siteverify');
 }
+
+class AdminCredentials {
+  AdminCredentials._();
+
+  static const String username = 'schedcare_admin';
+  static const String password = 'schedcare_password';
+}

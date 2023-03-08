@@ -39,9 +39,18 @@ class RecaptchaService {
           'response': _token,
         };
 
-        var response = await http.post(Config.verificationURL,
-            body: bodyParameters,
-            headers: {'Access-Control-Allow-Origin': '*'});
+        var response = await http.post(
+          Config.verificationURL,
+          body: bodyParameters,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': 'true',
+            'Access-Control-Allow-Methods':
+                'GET,PUT,PATCH,POST,DELETE, OPTIONS',
+            'Access-Control-Allow-Headers':
+                'Origin, X-Requested-With, Content-Type, Accept, Authorization, locale',
+          },
+        );
 
         recaptchaResponse = RecaptchaResponse.fromJson(response.body);
       } catch (e) {
