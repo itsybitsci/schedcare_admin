@@ -17,6 +17,6 @@ class Config {
 class AdminCredentials {
   AdminCredentials._();
 
-  static const String username = 'schedcare_admin';
-  static const String password = 'schedcare_password';
+  static const username = 'schedcare';
+  static const admins = [username];
 }

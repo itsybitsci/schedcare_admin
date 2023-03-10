@@ -4,8 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/config/config.dart';
-import 'package:schedcare_admin/screens/authentication/login_screen.dart';
-import 'package:schedcare_admin/screens/home/home_screen.dart';
+import 'package:schedcare_admin/providers/router_provider.dart';
 import 'package:schedcare_admin/utilities/firebase_options.dart';
 import 'package:schedcare_admin/services/recaptcha_service.dart';
 
@@ -30,7 +29,7 @@ void main() async {
   );
 }
 
-class SchedcareAdminApp extends StatelessWidget {
+class SchedcareAdminApp extends HookConsumerWidget {
   const SchedcareAdminApp({super.key});
 
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -39,17 +38,16 @@ class SchedcareAdminApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final routeNotifier = ref.watch(routerProvider);
+    return MaterialApp.router(
       title: 'SchedCare Admin Portal',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => const HomeScreen()
-      },
+      routeInformationParser: routeNotifier.routeInformationParser,
+      routeInformationProvider: routeNotifier.routeInformationProvider,
+      routerDelegate: routeNotifier.routerDelegate,
       debugShowCheckedModeBanner: false,
     );
   }
