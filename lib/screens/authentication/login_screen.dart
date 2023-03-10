@@ -128,7 +128,7 @@ class LoginScreen extends HookConsumerWidget {
                       }
                     }
                   },
-                  icon: const Icon(Icons.lock_open),
+                  icon: const Icon(Icons.login),
                   label: authNotifier.isLoading
                       ? const CircularProgressIndicator(
                           color: Colors.white,

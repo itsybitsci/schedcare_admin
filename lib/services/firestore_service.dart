@@ -17,4 +17,10 @@ class FirestoreService {
       throw Exception(e).toString();
     }
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUsersSnapshots() {
+    return _firebaseDb
+        .collection(FirestoreConstants.usersCollection)
+        .snapshots();
+  }
 }
