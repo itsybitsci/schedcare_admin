@@ -14,6 +14,12 @@ final routerProvider = Provider<GoRouter>(
         redirect: (BuildContext context, GoRouterState state) {
           if (authStateChangeNotifier.isLoading ||
               authStateChangeNotifier.hasError) return null;
+
+          if (![LoginScreen.routePath, HomeScreen.routePath]
+              .contains(state.location)) {
+            return LoginScreen.routePath;
+          }
+
           final isAuthenticated = authStateChangeNotifier.valueOrNull != null;
           final isLoggingIn = state.location == LoginScreen.routePath;
 
