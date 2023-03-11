@@ -17,10 +17,9 @@ class Patient {
   final String classification;
   final String uhsIdNumber;
   final String vaccinationStatus;
+  final bool isApproved;
   final DateTime lastLogin;
   final DateTime createdAt;
-
-  String get userEmail => email;
 
   Patient(
       {required this.uid,
@@ -39,6 +38,7 @@ class Patient {
       required this.classification,
       required this.uhsIdNumber,
       required this.vaccinationStatus,
+      required this.isApproved,
       required this.lastLogin,
       required this.createdAt});
 
@@ -61,6 +61,7 @@ class Patient {
       classification: userData['classification'] ?? '',
       uhsIdNumber: userData['uhsIdNumber'] ?? '',
       vaccinationStatus: userData['vaccinationStatus'],
+      isApproved: userData['isApproved'],
       lastLogin: userData['lastLogin'].toDate(),
       createdAt: userData['createdAt'].toDate(),
     );
@@ -77,6 +78,7 @@ class Doctor {
   final String suffix;
   final String sex;
   final String specialization;
+  final bool isApproved;
   final DateTime lastLogin;
   final DateTime createdAt;
 
@@ -90,6 +92,7 @@ class Doctor {
       required this.suffix,
       required this.sex,
       required this.specialization,
+      required this.isApproved,
       required this.lastLogin,
       required this.createdAt});
 
@@ -105,6 +108,7 @@ class Doctor {
       suffix: userData['suffix'] ?? '',
       sex: userData['sex'],
       specialization: userData['specialization'],
+      isApproved: userData['isApproved'],
       lastLogin: userData['lastLogin'].toDate(),
       createdAt: userData['createdAt'].toDate(),
     );

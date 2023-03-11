@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/models/user_models.dart';
-import 'package:schedcare_admin/providers/auth_provider.dart';
+import 'package:schedcare_admin/providers/firebase_provider.dart';
 import 'package:schedcare_admin/services/firestore_service.dart';
 import 'package:schedcare_admin/utilities/constants.dart';
 
@@ -15,8 +15,7 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final FirestoreService firestoreService = FirestoreService();
-    final AuthProvider authNotifier = ref.watch(authProvider);
-
+    final FirebaseProvider firebaseNotifier = ref.watch(firebaseProvider);
     final TabController tabController = useTabController(initialLength: 2);
 
     return Scaffold(
@@ -25,7 +24,7 @@ class HomeScreen extends HookConsumerWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                await authNotifier.signOut();
+                await firebaseNotifier.signOut();
               },
               icon: const Icon(Icons.logout))
         ],
@@ -37,7 +36,7 @@ class HomeScreen extends HookConsumerWidget {
               icon: Icon(Icons.person),
             ),
             Tab(
-              text: 'Pending Doctor Registrations',
+              text: 'Doctor Registrations',
               icon: Icon(Icons.person),
             )
           ],
@@ -52,7 +51,10 @@ class HomeScreen extends HookConsumerWidget {
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData) {
                 return ListView(
-                  children: snapshot.data!.docs.map(
+                  children: snapshot.data!.docs
+                      .where((QueryDocumentSnapshot snapshot) =>
+                          snapshot['isApproved'])
+                      .map(
                     (QueryDocumentSnapshot snapshot) {
                       bool isPatient = snapshot['role'].toLowerCase() ==
                           FirestoreConstants.patient.toLowerCase();
@@ -60,6 +62,7 @@ class HomeScreen extends HookConsumerWidget {
                       if (isPatient) {
                         Patient patient = Patient.fromSnapshot(snapshot);
                         return ListTile(
+                          onTap: () {},
                           title: Center(
                             child: Text(
                                 '${patient.firstName} ${patient.lastName}'),
@@ -71,6 +74,7 @@ class HomeScreen extends HookConsumerWidget {
                       } else {
                         Doctor doctor = Doctor.fromSnapshot(snapshot);
                         return ListTile(
+                          onTap: () {},
                           title: Center(
                             child:
                                 Text('${doctor.firstName} ${doctor.lastName}'),
@@ -89,8 +93,44 @@ class HomeScreen extends HookConsumerWidget {
               );
             },
           ),
-          const Center(
-            child: Text('Pending Doctor Registrations'),
+          StreamBuilder(
+            stream: firestoreService.getUsersSnapshots(),
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.hasData) {
+                return ListView(
+                  children: snapshot.data!.docs
+                      .where((snapshot) =>
+                          snapshot['role'].toLowerCase() ==
+                              FirestoreConstants.doctor.toLowerCase() &&
+                          !snapshot['isApproved'])
+                      .map(
+                    (QueryDocumentSnapshot snapshot) {
+                      Doctor doctor = Doctor.fromSnapshot(snapshot);
+                      return ListTile(
+                        onTap: () {},
+                        title: Center(
+                          child: Text('${doctor.firstName} ${doctor.lastName}'),
+                        ),
+                        subtitle: Center(
+                          child: Text(doctor.role),
+                        ),
+                        trailing: IconButton(
+                          onPressed: () async {
+                            await firebaseNotifier
+                                .approveRegistration(doctor.uid);
+                          },
+                          icon: const Icon(Icons.check),
+                        ),
+                      );
+                    },
+                  ).toList(),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
         ],
       ),

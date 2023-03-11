@@ -10,9 +10,11 @@ class FirestoreService {
       await _firebaseDb
           .collection(FirestoreConstants.adminsCollection)
           .doc(user.uid)
-          .update({
-        'lastLogin': user.metadata.lastSignInTime,
-      });
+          .update(
+        {
+          'lastLogin': user.metadata.lastSignInTime,
+        },
+      );
     } catch (e) {
       throw Exception(e).toString();
     }
@@ -22,5 +24,20 @@ class FirestoreService {
     return _firebaseDb
         .collection(FirestoreConstants.usersCollection)
         .snapshots();
+  }
+
+  Future<void> approveRegistration(String uid) async {
+    try {
+      await _firebaseDb
+          .collection(FirestoreConstants.usersCollection)
+          .doc(uid)
+          .update(
+        {
+          'isApproved': true,
+        },
+      );
+    } catch (e) {
+      throw Exception(e).toString();
+    }
   }
 }

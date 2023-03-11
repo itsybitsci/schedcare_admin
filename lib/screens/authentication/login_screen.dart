@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/config/config.dart';
-import 'package:schedcare_admin/providers/auth_provider.dart';
+import 'package:schedcare_admin/providers/firebase_provider.dart';
 
 class LoginScreen extends HookConsumerWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AuthProvider authNotifier = ref.watch(authProvider);
+    final FirebaseProvider firebaseNotifier = ref.watch(firebaseProvider);
     final TextEditingController usernameController = useTextEditingController();
     final TextEditingController passwordController = useTextEditingController();
     ValueNotifier passwordVisible = useState(false);
@@ -122,14 +122,14 @@ class LoginScreen extends HookConsumerWidget {
                       formKeyLogin.currentState?.save();
                       if (AdminCredentials.admins
                           .contains(usernameController.text.trim())) {
-                        await authNotifier.logInWithEmailAndPassword(
+                        await firebaseNotifier.logInWithEmailAndPassword(
                             '${usernameController.text.trim()}@gmail.com',
                             passwordController.text.trim());
                       }
                     }
                   },
                   icon: const Icon(Icons.login),
-                  label: authNotifier.isLoading
+                  label: firebaseNotifier.isLoading
                       ? const CircularProgressIndicator(
                           color: Colors.white,
                         )

@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/services/auth_service.dart';
 import 'package:schedcare_admin/services/firestore_service.dart';
 
-class AuthProvider extends ChangeNotifier {
+class FirebaseProvider extends ChangeNotifier {
   bool _isLoading = false;
   UserCredential? _userCredential;
   AuthService authService = AuthService();
@@ -50,10 +50,22 @@ class AuthProvider extends ChangeNotifier {
   Stream<User?> get userStream {
     return authService.userStream();
   }
+
+  Future<void> approveRegistration(String uid) async {
+    setLoading(true);
+    try {
+      await fireStoreService.approveRegistration(uid);
+      setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      setLoading(false);
+      throw Exception(e).toString();
+    }
+  }
 }
 
-final authProvider = ChangeNotifierProvider<AuthProvider>(
-  (ref) => AuthProvider(),
+final firebaseProvider = ChangeNotifierProvider<FirebaseProvider>(
+  (ref) => FirebaseProvider(),
 );
 
 final authStateChangeProvider = StreamProvider(
