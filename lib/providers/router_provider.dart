@@ -7,7 +7,7 @@ import 'package:schedcare_admin/screens/home/home_screen.dart';
 
 final routerProvider = Provider<GoRouter>(
   (ref) {
-    final router = RouterNotifier();
+    final router = RouterNotifier(ref);
     final authStateChangeNotifier = ref.watch(authStateChangeProvider);
     return GoRouter(
         refreshListenable: router,
@@ -35,7 +35,14 @@ final routerProvider = Provider<GoRouter>(
 );
 
 class RouterNotifier extends ChangeNotifier {
-  RouterNotifier();
+  final Ref _ref;
+
+  RouterNotifier(this._ref) {
+    _ref.listen(
+      firebaseProvider,
+      (_, __) => notifyListeners(),
+    );
+  }
 
   List<GoRoute> get routes => [
         GoRoute(
