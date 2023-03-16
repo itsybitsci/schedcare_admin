@@ -26,14 +26,14 @@ class FirestoreService {
         .snapshots();
   }
 
-  Future<void> approveRegistration(String uid) async {
+  Future<void> approveRegistration(String uid, bool value) async {
     try {
       await _firebaseDb
           .collection(FirestoreConstants.usersCollection)
           .doc(uid)
           .update(
         {
-          'isApproved': true,
+          'isApproved': value,
         },
       );
     } catch (e) {

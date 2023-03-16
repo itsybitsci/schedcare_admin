@@ -51,10 +51,10 @@ class FirebaseProvider extends ChangeNotifier {
     return authService.userStream();
   }
 
-  Future<void> approveRegistration(String uid) async {
+  Future<void> approveRegistration(String uid, bool value) async {
     setLoading(true);
     try {
-      await fireStoreService.approveRegistration(uid);
+      await fireStoreService.approveRegistration(uid, value);
       setLoading(false);
       notifyListeners();
     } catch (e) {

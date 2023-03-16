@@ -70,6 +70,13 @@ class HomeScreen extends HookConsumerWidget {
                           subtitle: Center(
                             child: Text(patient.role),
                           ),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              await firebaseNotifier.approveRegistration(
+                                  patient.uid, false);
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
                         );
                       } else {
                         Doctor doctor = Doctor.fromSnapshot(snapshot);
@@ -81,6 +88,13 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                           subtitle: Center(
                             child: Text(doctor.role),
+                          ),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              await firebaseNotifier.approveRegistration(
+                                  doctor.uid, false);
+                            },
+                            icon: const Icon(Icons.close),
                           ),
                         );
                       }
@@ -117,8 +131,8 @@ class HomeScreen extends HookConsumerWidget {
                         ),
                         trailing: IconButton(
                           onPressed: () async {
-                            await firebaseNotifier
-                                .approveRegistration(doctor.uid);
+                            await firebaseNotifier.approveRegistration(
+                                doctor.uid, true);
                           },
                           icon: const Icon(Icons.check),
                         ),
