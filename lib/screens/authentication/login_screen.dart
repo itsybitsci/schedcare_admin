@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/config/config.dart';
 import 'package:schedcare_admin/providers/firebase_provider.dart';
+import 'package:schedcare_admin/utilities/animations.dart';
+import 'package:schedcare_admin/utilities/components.dart';
 
 class LoginScreen extends HookConsumerWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -12,134 +15,117 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final FirebaseProvider firebaseNotifier = ref.watch(firebaseProvider);
+    final FirebaseProvider firebaseServicesNotifier =
+        ref.watch(firebaseProvider);
     final TextEditingController usernameController = useTextEditingController();
     final TextEditingController passwordController = useTextEditingController();
-    ValueNotifier passwordVisible = useState(false);
 
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Background(
         child: Center(
           child: Form(
             key: formKeyLogin,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Sign In',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 250.h),
+                    child: Image.asset("assets/images/splash.png"),
                   ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 400),
-                  child: TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      hintText: 'Username',
-                      contentPadding: const EdgeInsets.all(27),
-                      border: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.red, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    validator: (value) {
-                      return value!.isEmpty ? 'Required' : null;
-                    },
+                  SizedBox(
+                    height: 50.h,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 400),
-                  child: TextFormField(
-                    controller: passwordController,
-                    obscureText: !passwordVisible.value,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      contentPadding: const EdgeInsets.all(27),
-                      suffixIcon: IconButton(
-                        icon: Icon(passwordVisible.value
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: () {
-                          passwordVisible.value = !passwordVisible.value;
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.red, width: 3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    validator: (value) {
-                      return value!.isEmpty ? 'Required' : null;
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    if (formKeyLogin.currentState!.validate()) {
-                      formKeyLogin.currentState?.save();
-                      if (AdminCredentials.admins
-                          .contains(usernameController.text.trim())) {
-                        await firebaseNotifier.logInWithEmailAndPassword(
-                            '${usernameController.text.trim()}@gmail.com',
-                            passwordController.text.trim());
-                      }
-                    }
-                  },
-                  icon: const Icon(Icons.login),
-                  label: firebaseNotifier.isLoading
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : const Text(
-                          'Sign In',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 17),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 100.w),
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: usernameController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        suffixIcon: const Icon(Icons.email),
+                        labelText: 'Username',
+                        hintText: 'Enter username',
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.blue, width: 3.w),
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
-                ),
-              ],
+                      ),
+                      validator: (value) {
+                        return value!.isNotEmpty ? null : 'Required';
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 100.w),
+                    child: HookBuilder(
+                      builder: (_) {
+                        final passwordVisible = useState(false);
+
+                        return TextFormField(
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            labelText: 'Password',
+                            hintText: 'Enter password',
+                            suffixIcon: IconButton(
+                              icon: Icon(passwordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                              onPressed: () => passwordVisible.value =
+                                  !passwordVisible.value,
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 3.w),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                          ),
+                          obscureText: !passwordVisible.value,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Required';
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  firebaseServicesNotifier.getLoggingIn
+                      ? lottieLoading(width: 100)
+                      : ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 100.w),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (formKeyLogin.currentState!.validate()) {
+                                formKeyLogin.currentState?.save();
+                                if (AdminCredentials.admins
+                                    .contains(usernameController.text.trim())) {
+                                  await firebaseServicesNotifier
+                                      .logInWithEmailAndPassword(
+                                          '${usernameController.text.trim()}@gmail.com',
+                                          passwordController.text.trim());
+                                }
+                              }
+                            },
+                            child: Text(
+                              'LOGIN',
+                              style: TextStyle(fontSize: 7.sp),
+                            ),
+                          ),
+                        ),
+                ],
+              ),
             ),
           ),
         ),

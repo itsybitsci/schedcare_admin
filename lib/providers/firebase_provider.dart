@@ -6,11 +6,15 @@ import 'package:schedcare_admin/services/firestore_service.dart';
 
 class FirebaseProvider extends ChangeNotifier {
   bool _isLoading = false;
+  bool _isLoggingIn = false;
   UserCredential? _userCredential;
   AuthService authService = AuthService();
   FirestoreService fireStoreService = FirestoreService();
 
   bool get isLoading => _isLoading;
+
+  bool get getLoggingIn => _isLoggingIn;
+
   User? get isLoggedIn => authService.currentUser;
 
   setLoading(bool loader) {
@@ -18,8 +22,14 @@ class FirebaseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  setLoggingIn(bool loader) {
+    _isLoggingIn = loader;
+    notifyListeners();
+  }
+
   Future<void> logInWithEmailAndPassword(String email, String password) async {
     setLoading(true);
+    setLoggingIn(true);
     try {
       _userCredential =
           await authService.logInWithEmailAndPassword(email, password);
@@ -28,21 +38,26 @@ class FirebaseProvider extends ChangeNotifier {
       await fireStoreService.logUser(user!);
 
       setLoading(false);
+      setLoggingIn(false);
       notifyListeners();
-    } catch (e) {
+    } on FirebaseException catch (e) {
       setLoading(false);
+      setLoggingIn(false);
       throw Exception(e).toString();
     }
   }
 
   Future<void> signOut() async {
     setLoading(true);
+    setLoggingIn(true);
     try {
       await authService.signOut();
       setLoading(false);
+      setLoggingIn(false);
       notifyListeners();
-    } catch (e) {
+    } on FirebaseException catch (e) {
       setLoading(false);
+      setLoggingIn(false);
       throw Exception(e).toString();
     }
   }
