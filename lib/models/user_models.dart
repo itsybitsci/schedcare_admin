@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:schedcare_admin/utilities/constants.dart';
 
 class Patient {
-  final String uid;
+  final String id;
   final String email;
   final String role;
   final String firstName;
@@ -9,7 +10,7 @@ class Patient {
   final String lastName;
   final String suffix;
   final int age;
-  final String birthDate;
+  final DateTime birthDate;
   final String sex;
   final String phoneNumber;
   final String address;
@@ -19,10 +20,11 @@ class Patient {
   final String vaccinationStatus;
   final bool isApproved;
   final DateTime lastLogin;
+  final DateTime modifiedAt;
   final DateTime createdAt;
 
   Patient(
-      {required this.uid,
+      {required this.id,
       required this.email,
       required this.role,
       required this.firstName,
@@ -40,31 +42,57 @@ class Patient {
       required this.vaccinationStatus,
       required this.isApproved,
       required this.lastLogin,
+      required this.modifiedAt,
       required this.createdAt});
 
-  factory Patient.fromSnapshot(QueryDocumentSnapshot snapshot) {
-    Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+  factory Patient.fromSnapshot(DocumentSnapshot snapshot) {
     return Patient(
-      uid: snapshot.id,
-      email: userData['email'],
-      role: userData['role'],
-      firstName: userData['firstName'],
-      middleName: userData['middleName'] ?? '',
-      lastName: userData['lastName'],
-      suffix: userData['suffix'] ?? '',
-      age: userData['age'],
-      birthDate: userData['birthDate'],
-      sex: userData['sex'],
-      phoneNumber: userData['phoneNumber'],
-      address: userData['address'],
-      civilStatus: userData['civilStatus'],
-      classification: userData['classification'] ?? '',
-      uhsIdNumber: userData['uhsIdNumber'] ?? '',
-      vaccinationStatus: userData['vaccinationStatus'],
-      isApproved: userData['isApproved'],
-      lastLogin: userData['lastLogin'].toDate(),
-      createdAt: userData['createdAt'].toDate(),
+      id: snapshot.get(ModelFields.id),
+      email: snapshot.get(ModelFields.email),
+      role: snapshot.get(ModelFields.role),
+      firstName: snapshot.get(ModelFields.firstName),
+      middleName: snapshot.get(ModelFields.middleName) ?? '',
+      lastName: snapshot.get(ModelFields.lastName),
+      suffix: snapshot.get(ModelFields.suffix) ?? '',
+      age: snapshot.get(ModelFields.age),
+      birthDate: snapshot.get(ModelFields.birthDate).toDate(),
+      sex: snapshot.get(ModelFields.sex),
+      phoneNumber: snapshot.get(ModelFields.phoneNumber),
+      address: snapshot.get(ModelFields.address),
+      civilStatus: snapshot.get(ModelFields.civilStatus),
+      classification: snapshot.get(ModelFields.classification) ?? '',
+      uhsIdNumber: snapshot.get(ModelFields.uhsIdNumber) ?? '',
+      vaccinationStatus: snapshot.get(ModelFields.vaccinationStatus),
+      isApproved: snapshot.get(ModelFields.isApproved),
+      lastLogin: snapshot.get(ModelFields.lastLogin).toDate(),
+      modifiedAt: snapshot.get(ModelFields.modifiedAt).toDate(),
+      createdAt: snapshot.get(ModelFields.createdAt).toDate(),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      ModelFields.patientId: id,
+      ModelFields.email: email,
+      ModelFields.role: role,
+      ModelFields.firstName: firstName,
+      ModelFields.middleName: middleName,
+      ModelFields.lastName: lastName,
+      ModelFields.suffix: suffix,
+      ModelFields.age: age,
+      ModelFields.birthDate: birthDate,
+      ModelFields.sex: sex,
+      ModelFields.phoneNumber: phoneNumber,
+      ModelFields.address: address,
+      ModelFields.civilStatus: civilStatus,
+      ModelFields.classification: classification,
+      ModelFields.uhsIdNumber: uhsIdNumber,
+      ModelFields.vaccinationStatus: vaccinationStatus,
+      ModelFields.isApproved: isApproved,
+      ModelFields.lastLogin: lastLogin,
+      ModelFields.modifiedAt: modifiedAt,
+      ModelFields.createdAt: createdAt,
+    };
   }
 }
 
