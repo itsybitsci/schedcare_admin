@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/config/config.dart';
-import 'package:schedcare_admin/providers/firebase_provider.dart';
+import 'package:schedcare_admin/providers/firebase_services_provider.dart';
 import 'package:schedcare_admin/utilities/animations.dart';
 import 'package:schedcare_admin/utilities/components.dart';
 
@@ -15,8 +15,8 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final FirebaseProvider firebaseServicesNotifier =
-        ref.watch(firebaseProvider);
+    final FirebaseServicesProvider firebaseServicesNotifier =
+        ref.watch(firebaseServicesProvider);
     final TextEditingController usernameController = useTextEditingController();
     final TextEditingController passwordController = useTextEditingController();
 
@@ -102,7 +102,7 @@ class LoginScreen extends HookConsumerWidget {
                     height: 10.h,
                   ),
                   firebaseServicesNotifier.getLoggingIn
-                      ? lottieLoading(width: 100)
+                      ? lottieLoading(width: 20)
                       : ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: 100.w),
                           child: ElevatedButton(

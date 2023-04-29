@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/models/user_models.dart';
-import 'package:schedcare_admin/providers/firebase_provider.dart';
+import 'package:schedcare_admin/providers/firebase_services_provider.dart';
 import 'package:schedcare_admin/services/firestore_service.dart';
 import 'package:schedcare_admin/utilities/constants.dart';
 
@@ -15,7 +15,8 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final FirestoreService firestoreService = FirestoreService();
-    final FirebaseProvider firebaseNotifier = ref.watch(firebaseProvider);
+    final FirebaseServicesProvider firebaseServicesNotifier =
+        ref.watch(firebaseServicesProvider);
     final TabController tabController = useTabController(initialLength: 2);
 
     return Scaffold(
@@ -24,7 +25,7 @@ class HomeScreen extends HookConsumerWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                await firebaseNotifier.signOut();
+                await firebaseServicesNotifier.signOut();
               },
               icon: const Icon(Icons.logout))
         ],
@@ -72,8 +73,8 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                           trailing: IconButton(
                             onPressed: () async {
-                              await firebaseNotifier.approveRegistration(
-                                  patient.uid, false);
+                              await firebaseServicesNotifier
+                                  .approveRegistration(patient.id, false);
                             },
                             icon: const Icon(Icons.close),
                           ),
@@ -91,8 +92,8 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                           trailing: IconButton(
                             onPressed: () async {
-                              await firebaseNotifier.approveRegistration(
-                                  doctor.uid, false);
+                              await firebaseServicesNotifier
+                                  .approveRegistration(doctor.uid, false);
                             },
                             icon: const Icon(Icons.close),
                           ),
@@ -131,7 +132,7 @@ class HomeScreen extends HookConsumerWidget {
                         ),
                         trailing: IconButton(
                           onPressed: () async {
-                            await firebaseNotifier.approveRegistration(
+                            await firebaseServicesNotifier.approveRegistration(
                                 doctor.uid, true);
                           },
                           icon: const Icon(Icons.check),

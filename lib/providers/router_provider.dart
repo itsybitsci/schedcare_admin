@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:schedcare_admin/providers/firebase_provider.dart';
+import 'package:schedcare_admin/providers/firebase_services_provider.dart';
 import 'package:schedcare_admin/screens/authentication/login_screen.dart';
 import 'package:schedcare_admin/screens/home/home_screen.dart';
 
@@ -39,7 +39,7 @@ class RouterNotifier extends ChangeNotifier {
 
   RouterNotifier(this._ref) {
     _ref.listen(
-      firebaseProvider,
+      firebaseServicesProvider,
       (_, __) => notifyListeners(),
     );
   }

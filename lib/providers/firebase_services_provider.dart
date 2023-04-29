@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/services/auth_service.dart';
 import 'package:schedcare_admin/services/firestore_service.dart';
 
-class FirebaseProvider extends ChangeNotifier {
+class FirebaseServicesProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _isLoggingIn = false;
   UserCredential? _userCredential;
@@ -79,8 +79,9 @@ class FirebaseProvider extends ChangeNotifier {
   }
 }
 
-final firebaseProvider = ChangeNotifierProvider<FirebaseProvider>(
-  (ref) => FirebaseProvider(),
+final firebaseServicesProvider =
+    ChangeNotifierProvider<FirebaseServicesProvider>(
+  (ref) => FirebaseServicesProvider(),
 );
 
 final authStateChangeProvider = StreamProvider(
