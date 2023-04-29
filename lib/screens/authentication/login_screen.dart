@@ -48,7 +48,7 @@ class LoginScreen extends HookConsumerWidget {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[200],
-                  suffixIcon: const Icon(Icons.email),
+                  suffixIcon: const Icon(Icons.person),
                   labelText: 'Username',
                   hintText: 'Enter username',
                   border: OutlineInputBorder(
