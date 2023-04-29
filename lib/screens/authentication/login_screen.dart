@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,13 +22,14 @@ class LoginScreen extends HookConsumerWidget {
     final TextEditingController passwordController = useTextEditingController();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Background(
         child: Center(
           child: Form(
             key: formKeyLogin,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ConstrainedBox(
                     constraints: BoxConstraints(maxHeight: 250.h),
@@ -37,7 +39,8 @@ class LoginScreen extends HookConsumerWidget {
                     height: 50.h,
                   ),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 100.w),
+                    constraints:
+                        BoxConstraints(maxWidth: kIsWeb ? 100.w : 300.w),
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       controller: usernameController,
@@ -62,7 +65,8 @@ class LoginScreen extends HookConsumerWidget {
                     height: 15.h,
                   ),
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 100.w),
+                    constraints:
+                        BoxConstraints(maxWidth: kIsWeb ? 100.w : 300.w),
                     child: HookBuilder(
                       builder: (_) {
                         final passwordVisible = useState(false);
@@ -102,7 +106,7 @@ class LoginScreen extends HookConsumerWidget {
                     height: 10.h,
                   ),
                   firebaseServicesNotifier.getLoggingIn
-                      ? lottieLoading(width: 20)
+                      ? lottieLoading(width: kIsWeb ? 20 : 100)
                       : ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: 100.w),
                           child: ElevatedButton(
@@ -120,7 +124,7 @@ class LoginScreen extends HookConsumerWidget {
                             },
                             child: Text(
                               'LOGIN',
-                              style: TextStyle(fontSize: 7.sp),
+                              style: TextStyle(fontSize: kIsWeb ? 7.sp : 15.sp),
                             ),
                           ),
                         ),
