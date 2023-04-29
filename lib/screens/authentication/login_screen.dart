@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:schedcare_admin/config/config.dart';
 import 'package:schedcare_admin/providers/firebase_services_provider.dart';
 import 'package:schedcare_admin/utilities/animations.dart';
 import 'package:schedcare_admin/utilities/components.dart';
+import 'package:schedcare_admin/utilities/helpers.dart';
 
 class LoginScreen extends HookConsumerWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final double maxWidth = MediaQuery.of(context).size.width;
     final FirebaseServicesProvider firebaseServicesNotifier =
         ref.watch(firebaseServicesProvider);
     final TextEditingController usernameController = useTextEditingController();
@@ -32,15 +33,16 @@ class LoginScreen extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 250.h),
+                    constraints: BoxConstraints(
+                        maxHeight: isWeb(maxWidth) ? 200.h : 250.h),
                     child: Image.asset("assets/images/splash.png"),
                   ),
                   SizedBox(
                     height: 50.h,
                   ),
                   ConstrainedBox(
-                    constraints:
-                        BoxConstraints(maxWidth: kIsWeb ? 100.w : 300.w),
+                    constraints: BoxConstraints(
+                        maxWidth: isWeb(maxWidth) ? 100.w : 300.w),
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       controller: usernameController,
@@ -65,8 +67,8 @@ class LoginScreen extends HookConsumerWidget {
                     height: 15.h,
                   ),
                   ConstrainedBox(
-                    constraints:
-                        BoxConstraints(maxWidth: kIsWeb ? 100.w : 300.w),
+                    constraints: BoxConstraints(
+                        maxWidth: isWeb(maxWidth) ? 100.w : 300.w),
                     child: HookBuilder(
                       builder: (_) {
                         final passwordVisible = useState(false);
@@ -106,7 +108,7 @@ class LoginScreen extends HookConsumerWidget {
                     height: 10.h,
                   ),
                   firebaseServicesNotifier.getLoggingIn
-                      ? lottieLoading(width: kIsWeb ? 20 : 100)
+                      ? lottieLoading(width: isWeb(maxWidth) ? 20 : 100)
                       : ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: 100.w),
                           child: ElevatedButton(
@@ -124,7 +126,8 @@ class LoginScreen extends HookConsumerWidget {
                             },
                             child: Text(
                               'LOGIN',
-                              style: TextStyle(fontSize: kIsWeb ? 7.sp : 15.sp),
+                              style: TextStyle(
+                                  fontSize: isWeb(maxWidth) ? 7.sp : 15.sp),
                             ),
                           ),
                         ),

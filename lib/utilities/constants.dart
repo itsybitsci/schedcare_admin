@@ -9,6 +9,10 @@ class FirestoreConstants {
   static const doctor = 'Doctor';
 }
 
+class AppConstants {
+  static const double mobileMaxWidth = 600.0;
+}
+
 class ModelFields {
   static const String email = 'email';
   static const String role = 'role';
