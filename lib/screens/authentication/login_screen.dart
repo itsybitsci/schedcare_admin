@@ -22,118 +22,112 @@ class LoginScreen extends HookConsumerWidget {
     final TextEditingController usernameController = useTextEditingController();
     final TextEditingController passwordController = useTextEditingController();
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Background(
-        child: Center(
-          child: Form(
-            key: formKeyLogin,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxHeight: isWeb(maxWidth) ? 200.h : 250.h),
-                    child: Image.asset("assets/images/splash.png"),
+    return Background(
+      child: Form(
+        key: formKeyLogin,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ConstrainedBox(
+                constraints:
+                    BoxConstraints(maxHeight: isWeb(maxWidth) ? 250.h : 180.h),
+                child: Image.asset("assets/images/splash.png"),
+              ),
+              SizedBox(
+                height: 25.h,
+              ),
+              ConstrainedBox(
+                constraints:
+                    BoxConstraints(maxWidth: isWeb(maxWidth) ? 100.w : 300.w),
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    suffixIcon: const Icon(Icons.email),
+                    labelText: 'Username',
+                    hintText: 'Enter username',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 3.w),
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
                   ),
-                  SizedBox(
-                    height: 50.h,
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: isWeb(maxWidth) ? 100.w : 300.w),
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: usernameController,
+                  validator: (value) {
+                    return value!.isNotEmpty ? null : 'Required';
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              ConstrainedBox(
+                constraints:
+                    BoxConstraints(maxWidth: isWeb(maxWidth) ? 100.w : 300.w),
+                child: HookBuilder(
+                  builder: (_) {
+                    final passwordVisible = useState(false);
+
+                    return TextFormField(
+                      controller: passwordController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.grey[200],
-                        suffixIcon: const Icon(Icons.email),
-                        labelText: 'Username',
-                        hintText: 'Enter username',
+                        labelText: 'Password',
+                        hintText: 'Enter password',
+                        suffixIcon: IconButton(
+                          icon: Icon(passwordVisible.value
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () =>
+                              passwordVisible.value = !passwordVisible.value,
+                        ),
                         border: OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blue, width: 3.w),
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                       ),
+                      obscureText: !passwordVisible.value,
                       validator: (value) {
-                        return value!.isNotEmpty ? null : 'Required';
+                        if (value!.isEmpty) {
+                          return 'Required';
+                        }
+                        return null;
                       },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: isWeb(maxWidth) ? 100.w : 300.w),
-                    child: HookBuilder(
-                      builder: (_) {
-                        final passwordVisible = useState(false);
-
-                        return TextFormField(
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            labelText: 'Password',
-                            hintText: 'Enter password',
-                            suffixIcon: IconButton(
-                              icon: Icon(passwordVisible.value
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
-                              onPressed: () => passwordVisible.value =
-                                  !passwordVisible.value,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 3.w),
-                              borderRadius: BorderRadius.circular(20.r),
-                            ),
-                          ),
-                          obscureText: !passwordVisible.value,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Required';
-                            }
-                            return null;
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  firebaseServicesNotifier.getLoggingIn
-                      ? lottieLoading(width: isWeb(maxWidth) ? 20 : 100)
-                      : ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: 100.w),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (formKeyLogin.currentState!.validate()) {
-                                formKeyLogin.currentState?.save();
-                                if (AdminCredentials.admins
-                                    .contains(usernameController.text.trim())) {
-                                  await firebaseServicesNotifier
-                                      .logInWithEmailAndPassword(
-                                          '${usernameController.text.trim()}@gmail.com',
-                                          passwordController.text.trim());
-                                }
-                              }
-                            },
-                            child: Text(
-                              'LOGIN',
-                              style: TextStyle(
-                                  fontSize: isWeb(maxWidth) ? 7.sp : 15.sp),
-                            ),
-                          ),
-                        ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
+              SizedBox(
+                height: 10.h,
+              ),
+              firebaseServicesNotifier.getLoggingIn
+                  ? lottieLoading(width: isWeb(maxWidth) ? 20 : 100)
+                  : ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 100.w),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (formKeyLogin.currentState!.validate()) {
+                            formKeyLogin.currentState?.save();
+                            if (AdminCredentials.admins
+                                .contains(usernameController.text.trim())) {
+                              await firebaseServicesNotifier
+                                  .logInWithEmailAndPassword(
+                                      '${usernameController.text.trim()}@gmail.com',
+                                      passwordController.text.trim());
+                            }
+                          }
+                        },
+                        child: Text(
+                          'LOGIN',
+                          style: TextStyle(
+                              fontSize: isWeb(maxWidth) ? 7.sp : 15.sp),
+                        ),
+                      ),
+                    ),
+            ],
           ),
         ),
       ),
