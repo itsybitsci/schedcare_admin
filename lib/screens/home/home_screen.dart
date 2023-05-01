@@ -64,7 +64,7 @@ class HomeScreen extends HookConsumerWidget {
               icon: Icon(Icons.person),
             ),
             Tab(
-              text: 'Blocked',
+              text: 'Doctor Registrations',
               icon: Icon(Icons.person),
             )
           ],
@@ -111,103 +111,116 @@ class HomeScreen extends HookConsumerWidget {
                           borderRadius: BorderRadius.circular(10.r),
                           color: Colors.white,
                         ),
-                        child: FirestoreQueryBuilder(
-                          query: patientsQuery,
-                          builder: (context, snapshot, _) {
-                            if (snapshot.hasError) {
-                              return lottieError();
-                            }
+                        child: ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            dragDevices: {
+                              PointerDeviceKind.touch,
+                              PointerDeviceKind.mouse,
+                            },
+                          ),
+                          child: FirestoreQueryBuilder(
+                            query: patientsQuery,
+                            builder: (context, snapshot, _) {
+                              if (snapshot.hasError) {
+                                return lottieError();
+                              }
 
-                            if (snapshot.hasData) {
-                              return snapshot.docs.isEmpty
-                                  ? Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          lottieNoData(),
-                                        ],
-                                      ),
-                                    )
-                                  : ListView.builder(
-                                      itemCount: snapshot.docs.length + 1,
-                                      itemBuilder: (context, index) {
-                                        if (index == snapshot.docs.length) {
-                                          return lottieSearchDoctors(width: 10);
-                                        }
+                              if (snapshot.hasData) {
+                                return snapshot.docs.isEmpty
+                                    ? Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            lottieNoData(),
+                                          ],
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        itemCount: snapshot.docs.length + 1,
+                                        itemBuilder: (context, index) {
+                                          if (index == snapshot.docs.length) {
+                                            return lottieSearchDoctors(
+                                                width: 10);
+                                          }
 
-                                        if (snapshot.hasMore &&
-                                            index + 1 == snapshot.docs.length) {
-                                          snapshot.fetchMore();
-                                        }
+                                          if (snapshot.hasMore &&
+                                              index + 1 ==
+                                                  snapshot.docs.length) {
+                                            snapshot.fetchMore();
+                                          }
 
-                                        final Patient patient =
-                                            snapshot.docs[index].data();
+                                          final Patient patient =
+                                              snapshot.docs[index].data();
 
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 5.h, horizontal: 10.w),
-                                          child: Material(
-                                            type: MaterialType.transparency,
-                                            child: ListTile(
-                                              tileColor: Colors.grey[200],
-                                              shape: RoundedRectangleBorder(
-                                                side: BorderSide(
-                                                    color: Colors.grey[300]!),
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                              ),
-                                              onTap: null,
-                                              title: Center(
-                                                child: Text(
-                                                    '${patient.firstName} ${patient.lastName} ${patient.suffix}'
-                                                        .trim(),
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            isWeb(maxWidth)
-                                                                ? 5.sp
-                                                                : 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ),
-                                              subtitle: Center(
-                                                child: Text(
-                                                    'Email: ${patient.email}',
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            isWeb(maxWidth)
-                                                                ? 4.sp
-                                                                : 10.sp)),
-                                              ),
-                                              trailing: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Center(
-                                                    child: IconButton(
-                                                      onPressed: () async {
-                                                        await firebaseServicesNotifier
-                                                            .approveRegistration(
-                                                                patient.id,
-                                                                false);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.close,
-                                                        color: Colors.red,
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5.h,
+                                                horizontal: 10.w),
+                                            child: Material(
+                                              type: MaterialType.transparency,
+                                              child: ListTile(
+                                                tileColor: Colors.grey[200],
+                                                shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: Colors.grey[300]!),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.r),
+                                                ),
+                                                onTap: null,
+                                                title: Center(
+                                                  child: Text(
+                                                      '${patient.firstName} ${patient.lastName} ${patient.suffix}'
+                                                          .trim(),
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              isWeb(maxWidth)
+                                                                  ? 5.sp
+                                                                  : 12.sp,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ),
+                                                subtitle: Center(
+                                                  child: Text(
+                                                      'Email: ${patient.email}',
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              isWeb(maxWidth)
+                                                                  ? 4.sp
+                                                                  : 10.sp)),
+                                                ),
+                                                trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Center(
+                                                      child: IconButton(
+                                                        onPressed: () async {
+                                                          await firebaseServicesNotifier
+                                                              .approveRegistration(
+                                                                  patient.id,
+                                                                  false);
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.close,
+                                                          color: Colors.red,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                            }
+                                          );
+                                        },
+                                      );
+                              }
 
-                            return lottieLoading(
-                                width: isWeb(maxWidth) ? 10 : 50);
-                          },
+                              return lottieLoading(
+                                  width: isWeb(maxWidth) ? 10 : 50);
+                            },
+                          ),
                         ),
                       ),
                     ),
