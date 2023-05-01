@@ -118,7 +118,7 @@ class HomeScreen extends HookConsumerWidget {
                           builder: (context,
                               AsyncSnapshot<QuerySnapshot<Patient>> snapshot) {
                             if (snapshot.hasError) {
-                              return lottieError();
+                              return Text('Something went wrong');
                             }
 
                             if (snapshot.hasData) {
@@ -133,12 +133,12 @@ class HomeScreen extends HookConsumerWidget {
                                       ),
                                     )
                                   : ListView.builder(
-                                      itemCount: snapshot.data!.docs.length + 1,
+                                      itemCount: snapshot.data!.docs.length,
                                       itemBuilder: (context, index) {
-                                        if (index ==
-                                            snapshot.data!.docs.length) {
-                                          return lottieSearchDoctors(width: 10);
-                                        }
+                                        // if (index ==
+                                        //     snapshot.data!.docs.length) {
+                                        //   return lottieSearchDoctors(width: 10);
+                                        // }
 
                                         // if (snapshot.hasMore &&
                                         //     index + 1 == snapshot.docs.length) {
@@ -209,8 +209,7 @@ class HomeScreen extends HookConsumerWidget {
                                     );
                             }
 
-                            return lottieLoading(
-                                width: isWeb(maxWidth) ? 10 : 50);
+                            return Center(child: CircularProgressIndicator());
                           },
                         ),
                       ),
