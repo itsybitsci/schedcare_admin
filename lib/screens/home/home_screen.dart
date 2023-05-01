@@ -77,7 +77,7 @@ class HomeScreen extends HookConsumerWidget {
           children: [
             Center(
               child: Container(
-                height: 540.h,
+                height: 560.h,
                 width: isWeb(maxWidth) ? 140.w : 340.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
@@ -88,7 +88,7 @@ class HomeScreen extends HookConsumerWidget {
                   children: [
                     Container(
                       width: isWeb(maxWidth) ? 135.w : 320.w,
-                      height: 40.h,
+                      height: 60.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.r),
                         color: Colors.white,
@@ -123,29 +123,29 @@ class HomeScreen extends HookConsumerWidget {
                             query: patientsQuery,
                             builder: (context, snapshot, _) {
                               if (snapshot.hasError) {
-                                return lottieError();
+                                return Center(
+                                  child: Text(
+                                    Prompts.connectionError,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize:
+                                            isWeb(maxWidth) ? 3.sp : 14.sp),
+                                  ),
+                                );
                               }
 
                               if (snapshot.hasData) {
                                 return snapshot.docs.isEmpty
                                     ? Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            lottieNoData(
-                                                width:
-                                                    isWeb(maxWidth) ? 50 : 200),
-                                            Text(
-                                              Prompts.noPatients,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: isWeb(maxWidth)
-                                                      ? 3.sp
-                                                      : 14.sp),
-                                            ),
-                                          ],
+                                        child: Text(
+                                          Prompts.noPatients,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: isWeb(maxWidth)
+                                                  ? 3.sp
+                                                  : 14.sp),
                                         ),
                                       )
                                     : ListView.builder(
