@@ -65,7 +65,7 @@ class HomeScreen extends HookConsumerWidget {
               icon: Icon(Icons.person),
             ),
             Tab(
-              text: 'Doctor Registrations',
+              text: 'Blocked',
               icon: Icon(Icons.person),
             )
           ],
@@ -149,14 +149,8 @@ class HomeScreen extends HookConsumerWidget {
                                         ),
                                       )
                                     : ListView.builder(
-                                        itemCount: snapshot.docs.length + 1,
+                                        itemCount: snapshot.docs.length,
                                         itemBuilder: (context, index) {
-                                          if (index == snapshot.docs.length) {
-                                            return lottieSearchDoctors(
-                                                width:
-                                                    isWeb(maxWidth) ? 10 : 50);
-                                          }
-
                                           if (snapshot.hasMore &&
                                               index + 1 ==
                                                   snapshot.docs.length) {
