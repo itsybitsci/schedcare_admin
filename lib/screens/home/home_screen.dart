@@ -12,6 +12,7 @@ import 'package:schedcare_admin/utilities/animations.dart';
 import 'package:schedcare_admin/utilities/components.dart';
 import 'package:schedcare_admin/utilities/constants.dart';
 import 'package:schedcare_admin/utilities/helpers.dart';
+import 'package:schedcare_admin/utilities/prompts.dart';
 
 class HomeScreen extends HookConsumerWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -132,7 +133,18 @@ class HomeScreen extends HookConsumerWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            lottieNoData(),
+                                            lottieNoData(
+                                                width:
+                                                    isWeb(maxWidth) ? 50 : 200),
+                                            Text(
+                                              Prompts.noPatients,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: isWeb(maxWidth)
+                                                      ? 3.sp
+                                                      : 14.sp),
+                                            ),
                                           ],
                                         ),
                                       )
@@ -141,7 +153,8 @@ class HomeScreen extends HookConsumerWidget {
                                         itemBuilder: (context, index) {
                                           if (index == snapshot.docs.length) {
                                             return lottieSearchDoctors(
-                                                width: 10);
+                                                width:
+                                                    isWeb(maxWidth) ? 10 : 50);
                                           }
 
                                           if (snapshot.hasMore &&

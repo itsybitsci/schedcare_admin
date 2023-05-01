@@ -17,9 +17,9 @@ Center lottieError() => Center(
           width: 400.w),
     );
 
-Center lottieNoData() => Center(
+Center lottieNoData({double width = 200}) => Center(
       child:
-          Lottie.asset('assets/animations/no-data_lottie.json', width: 200.w),
+          Lottie.asset('assets/animations/no-data_lottie.json', width: width.w),
     );
 
 Center lottieSearchDoctors({double width = 50}) => Center(
