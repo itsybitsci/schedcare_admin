@@ -8,7 +8,7 @@ class FirestoreService {
   Future<void> logUser(User user) async {
     try {
       await _firebaseDb
-          .collection(FirestoreConstants.adminsCollection)
+          .collection(FirebaseConstants.adminsCollection)
           .doc(user.uid)
           .update(
         {
@@ -22,14 +22,14 @@ class FirestoreService {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getUsersSnapshots() {
     return _firebaseDb
-        .collection(FirestoreConstants.usersCollection)
+        .collection(FirebaseConstants.usersCollection)
         .snapshots();
   }
 
   Future<void> approveRegistration(String uid, bool value) async {
     try {
       await _firebaseDb
-          .collection(FirestoreConstants.usersCollection)
+          .collection(FirebaseConstants.usersCollection)
           .doc(uid)
           .update(
         {

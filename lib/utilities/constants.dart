@@ -1,16 +1,15 @@
-// Firestore Constants
-class FirestoreConstants {
-  //Collections
+import 'package:flutter/material.dart';
+
+class FirebaseConstants {
   static const usersCollection = 'users';
   static const adminsCollection = 'administrators';
-
-  //Roles
-  static const patient = 'Patient';
-  static const doctor = 'Doctor';
 }
 
 class AppConstants {
   static const double mobileMaxWidth = 600.0;
+
+  static const patient = 'Patient';
+  static const doctor = 'Doctor';
 }
 
 class ModelFields {
@@ -59,4 +58,9 @@ class ModelFields {
   static const String message = 'message';
   static const String messageTimeStamp = 'messageTimeStamp';
   static const String senderName = 'senderName';
+}
+
+class ColorConstants {
+  static const MaterialColor primaryColor = Colors.blue;
+  static const MaterialColor primaryLight = Colors.lightBlue;
 }

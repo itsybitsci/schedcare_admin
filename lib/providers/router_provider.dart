@@ -53,7 +53,7 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           name: HomeScreen.routeName,
           path: HomeScreen.routePath,
-          builder: (context, state) => const HomeScreen(),
+          builder: (context, state) => HomeScreen(),
         )
       ];
 }

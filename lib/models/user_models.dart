@@ -97,9 +97,10 @@ class Patient {
 }
 
 class Doctor {
-  final String uid;
+  final String id;
   final String email;
   final String role;
+  final String prefix;
   final String firstName;
   final String middleName;
   final String lastName;
@@ -108,12 +109,14 @@ class Doctor {
   final String specialization;
   final bool isApproved;
   final DateTime lastLogin;
+  final DateTime modifiedAt;
   final DateTime createdAt;
 
   Doctor(
-      {required this.uid,
+      {required this.id,
       required this.email,
       required this.role,
+      required this.prefix,
       required this.firstName,
       required this.middleName,
       required this.lastName,
@@ -122,23 +125,44 @@ class Doctor {
       required this.specialization,
       required this.isApproved,
       required this.lastLogin,
+      required this.modifiedAt,
       required this.createdAt});
 
-  factory Doctor.fromSnapshot(QueryDocumentSnapshot snapshot) {
-    Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+  factory Doctor.fromSnapshot(DocumentSnapshot snapshot) {
     return Doctor(
-      uid: snapshot.id,
-      email: userData['email'],
-      role: userData['role'],
-      firstName: userData['firstName'],
-      middleName: userData['middleName'] ?? '',
-      lastName: userData['lastName'],
-      suffix: userData['suffix'] ?? '',
-      sex: userData['sex'],
-      specialization: userData['specialization'],
-      isApproved: userData['isApproved'],
-      lastLogin: userData['lastLogin'].toDate(),
-      createdAt: userData['createdAt'].toDate(),
+      id: snapshot.get(ModelFields.id),
+      email: snapshot.get(ModelFields.email),
+      role: snapshot.get(ModelFields.role),
+      prefix: snapshot.get(ModelFields.prefix) ?? '',
+      firstName: snapshot.get(ModelFields.firstName),
+      middleName: snapshot.get(ModelFields.middleName) ?? '',
+      lastName: snapshot.get(ModelFields.lastName),
+      suffix: snapshot.get(ModelFields.suffix) ?? '',
+      sex: snapshot.get(ModelFields.sex),
+      specialization: snapshot.get(ModelFields.specialization),
+      isApproved: snapshot.get(ModelFields.isApproved),
+      lastLogin: snapshot.get(ModelFields.lastLogin).toDate(),
+      modifiedAt: snapshot.get(ModelFields.modifiedAt).toDate(),
+      createdAt: snapshot.get(ModelFields.createdAt).toDate(),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      ModelFields.doctorId: id,
+      ModelFields.email: email,
+      ModelFields.role: role,
+      ModelFields.prefix: prefix,
+      ModelFields.firstName: firstName,
+      ModelFields.middleName: middleName,
+      ModelFields.lastName: lastName,
+      ModelFields.suffix: suffix,
+      ModelFields.sex: sex,
+      ModelFields.specialization: specialization,
+      ModelFields.isApproved: isApproved,
+      ModelFields.lastLogin: lastLogin,
+      ModelFields.modifiedAt: modifiedAt,
+      ModelFields.createdAt: createdAt,
+    };
   }
 }
