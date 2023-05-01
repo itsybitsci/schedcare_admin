@@ -17,14 +17,16 @@ class HomeScreen extends HookConsumerWidget {
   HomeScreen({Key? key}) : super(key: key);
   static String get routeName => 'home';
   static String get routePath => '/home';
-  final Query<Patient> patientsQuery = FirebaseFirestore.instance
-      .collection(FirebaseConstants.usersCollection)
-      .where(ModelFields.role, isEqualTo: AppConstants.patient)
-      .where(ModelFields.isApproved, isEqualTo: true)
-      .withConverter(
-        fromFirestore: (snapshot, _) => Patient.fromSnapshot(snapshot),
-        toFirestore: (patient, _) => patient.toMap(),
-      );
+  final Stream<QuerySnapshot<Patient>> patientsQuery =
+      FirebaseFirestore.instance
+          .collection(FirebaseConstants.usersCollection)
+          .where(ModelFields.role, isEqualTo: AppConstants.patient)
+          .where(ModelFields.isApproved, isEqualTo: true)
+          .withConverter(
+            fromFirestore: (snapshot, _) => Patient.fromSnapshot(snapshot),
+            toFirestore: (patient, _) => patient.toMap(),
+          )
+          .snapshots();
   final Query<Doctor> doctorsQuery = FirebaseFirestore.instance
       .collection(FirebaseConstants.usersCollection)
       .where(ModelFields.role, isEqualTo: AppConstants.doctor)
@@ -111,15 +113,16 @@ class HomeScreen extends HookConsumerWidget {
                           borderRadius: BorderRadius.circular(10.r),
                           color: Colors.white,
                         ),
-                        child: FirestoreQueryBuilder(
-                          query: patientsQuery,
-                          builder: (context, snapshot, _) {
+                        child: StreamBuilder(
+                          stream: patientsQuery,
+                          builder: (context,
+                              AsyncSnapshot<QuerySnapshot<Patient>> snapshot) {
                             if (snapshot.hasError) {
                               return lottieError();
                             }
 
                             if (snapshot.hasData) {
-                              return snapshot.docs.isEmpty
+                              return snapshot.data!.docs.isEmpty
                                   ? Center(
                                       child: Column(
                                         mainAxisAlignment:
@@ -130,19 +133,20 @@ class HomeScreen extends HookConsumerWidget {
                                       ),
                                     )
                                   : ListView.builder(
-                                      itemCount: snapshot.docs.length + 1,
+                                      itemCount: snapshot.data!.docs.length + 1,
                                       itemBuilder: (context, index) {
-                                        if (index == snapshot.docs.length) {
+                                        if (index ==
+                                            snapshot.data!.docs.length) {
                                           return lottieSearchDoctors(width: 10);
                                         }
 
-                                        if (snapshot.hasMore &&
-                                            index + 1 == snapshot.docs.length) {
-                                          snapshot.fetchMore();
-                                        }
+                                        // if (snapshot.hasMore &&
+                                        //     index + 1 == snapshot.docs.length) {
+                                        //   snapshot.fetchMore();
+                                        // }
 
                                         final Patient patient =
-                                            snapshot.docs[index].data();
+                                            snapshot.data!.docs[index].data();
 
                                         return Padding(
                                           padding: EdgeInsets.symmetric(
