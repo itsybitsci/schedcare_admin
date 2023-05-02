@@ -47,6 +47,7 @@ class SchedcareAdminApp extends HookConsumerWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        themeMode: ThemeMode.light,
         routeInformationParser: routeNotifier.routeInformationParser,
         routeInformationProvider: routeNotifier.routeInformationProvider,
         routerDelegate: routeNotifier.routerDelegate,
