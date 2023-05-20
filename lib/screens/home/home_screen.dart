@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:schedcare_admin/models/user_models.dart';
 import 'package:schedcare_admin/providers/firebase_services_provider.dart';
+import 'package:schedcare_admin/screens/home/doctor_details_screen.dart';
 import 'package:schedcare_admin/screens/home/patient_details_screen.dart';
 import 'package:schedcare_admin/utilities/animations.dart';
 import 'package:schedcare_admin/utilities/components.dart';
@@ -346,7 +347,13 @@ class HomeScreen extends HookConsumerWidget {
                                                       BorderRadius.circular(
                                                           10.r),
                                                 ),
-                                                onTap: null,
+                                                onTap: () async => showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      DoctorDetailsScreen(
+                                                    doctor: doctor,
+                                                  ),
+                                                ),
                                                 title: Center(
                                                   child: Text(
                                                       '${doctor.prefix} ${doctor.firstName} ${doctor.lastName} ${doctor.suffix}'
