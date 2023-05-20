@@ -27,7 +27,7 @@ class PatientDetailsScreen extends HookConsumerWidget {
         textAlign: TextAlign.center,
       ),
       content: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: isWeb(maxWidth) ? 25.h : 300.h),
+        constraints: BoxConstraints(maxHeight: isWeb(maxWidth) ? 300.h : 250.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
