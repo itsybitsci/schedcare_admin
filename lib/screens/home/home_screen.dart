@@ -523,7 +523,21 @@ class HomeScreen extends HookConsumerWidget {
                                                       BorderRadius.circular(
                                                           10.r),
                                                 ),
-                                                onTap: null,
+                                                onTap: () async => isPatient
+                                                    ? showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            PatientDetailsScreen(
+                                                          patient: patient!,
+                                                        ),
+                                                      )
+                                                    : showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            DoctorDetailsScreen(
+                                                          doctor: doctor!,
+                                                        ),
+                                                      ),
                                                 title: Center(
                                                   child: Text(
                                                       isPatient
