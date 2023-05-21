@@ -12,6 +12,9 @@ class Config {
   /// Holds the 'Verfication URL' for the `Google reCAPTCHA v3` API .
   static final verificationURL =
       Uri.parse('https://www.google.com/recaptcha/api/siteverify');
+
+  static const bearerToken =
+      'XL(CIO^AgFY^8O*6pIWb#sMTHHi063!t-YbiD#H2ra#@Z6uP#prnCT(km-M7rXa16B90n1Ct0wydCt#M18Mpe-VClbf3uliEW8IV';
 }
 
 class AdminCredentials {

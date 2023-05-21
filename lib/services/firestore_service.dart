@@ -40,4 +40,8 @@ class FirestoreService {
       throw Exception(e).toString();
     }
   }
+
+  Future<void> deleteDocument(String collection, String docId) async {
+    return await _firebaseDb.collection(collection).doc(docId).delete();
+  }
 }

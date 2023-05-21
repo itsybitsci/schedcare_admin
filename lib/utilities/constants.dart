@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class FirebaseConstants {
-  static const usersCollection = 'users';
   static const adminsCollection = 'administrators';
+  static const String usersCollection = 'users';
+  static const String consultationRequestsCollection = 'consultation_requests';
+  static const String userTokensCollection = 'user_tokens';
+  static const String notificationsCollection = 'notifications';
 }
 
 class AppConstants {
@@ -58,6 +61,9 @@ class ModelFields {
   static const String message = 'message';
   static const String messageTimeStamp = 'messageTimeStamp';
   static const String senderName = 'senderName';
+  static const String isPatientSoftDeleted = 'isPatientSoftDeleted';
+  static const String isDoctorSoftDeleted = 'isDoctorSoftDeleted';
+  static const String isEmailVerified = 'isEmailVerified';
 }
 
 class ColorConstants {

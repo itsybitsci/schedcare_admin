@@ -4,4 +4,5 @@ class Prompts {
   static const String connectionError =
       'There was an error connecting to the server. Please try again later.';
   static const String noBlockedUsers = 'No blocked users in the system.';
+  static const String noUnverifiedUsers = 'No unverified users in the system.';
 }
